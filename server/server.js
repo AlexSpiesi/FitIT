@@ -12,17 +12,22 @@ app.use(express.static(path.join(__dirname, "files")));
 
 const fetch = require("node-fetch");
 
-const BASE_URL = "https://exercisedb.p.rapidapi.com";
-const HEADERS = {
+const EXERCISEDB_URL = "https://exercisedb.p.rapidapi.com";
+const EXERCISEDB_HEADERS = {
   "X-RapidAPI-Key": "40cd5fb34dmsh295a23ff5312e1bp119f01jsn0e8265eda1c2", // Replace with your actual key
   "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
 };
 
-// const { BASE_URL, HEADERS } = require("./constant");
+const FITNESSCALC_URL = "https://fitness-calculator.p.rapidapi.com";
+const FITNESSCALC_HEADERS = {
+  "X-RapidAPI-Key": "40cd5fb34dmsh295a23ff5312e1bp119f01jsn0e8265eda1c2", // Replace with your actual key
+  "X-RapidAPI-Host": "fitness-calculator.p.rapidapi.com",
+};
+// const { EXERCISEDB_URL, EXERCISEDB_HEADERS } = require("./constant");
 // require("dotenv").config(); // Load env vars
 
-// const BASE_URL = "https://exercisedb.p.rapidapi.com";
-// const HEADERS = {
+// const EXERCISEDB_URL = "https://exercisedb.p.rapidapi.com";
+// const EXERCISEDB_HEADERS = {
 //   "X-RapidAPI-Key": process.env.RAPID_API_KEY,
 //   "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
 // };
@@ -32,9 +37,9 @@ const HEADERS = {
 // Example 1: Fetch only 5 exercises
 app.get("/test/exercises", async (req, res) => {
   try {
-    const response = await fetch(`${BASE_URL}/exercises`, {
+    const response = await fetch(`${EXERCISEDB_URL}/exercises`, {
       method: "GET",
-      headers: HEADERS,
+      headers: EXERCISEDB_HEADERS,
     });
 
     if (!response.ok) {
@@ -53,9 +58,9 @@ app.get("/test/exercises", async (req, res) => {
 // Example 2: Fetch list of body parts
 app.get("/test/bodyparts", async (req, res) => {
   try {
-    const response = await fetch(`${BASE_URL}/exercises/bodyPartList`, {
+    const response = await fetch(`${EXERCISEDB_URL}/exercises/bodyPartList`, {
       method: "GET",
-      headers: HEADERS,
+      headers: EXERCISEDB_HEADERS,
     });
 
     if (!response.ok) {
@@ -73,9 +78,9 @@ app.get("/test/bodyparts", async (req, res) => {
 // Example 3: List all available target muscles (e.g. "biceps", "abs")
 app.get("/test/targets", async (req, res) => {
   try {
-    const response = await fetch(`${BASE_URL}/exercises/targetList`, {
+    const response = await fetch(`${EXERCISEDB_URL}/exercises/targetList`, {
       method: "GET",
-      headers: HEADERS,
+      headers: EXERCISEDB_HEADERS,
     });
 
     if (!response.ok) {
@@ -93,8 +98,8 @@ app.get("/test/targets", async (req, res) => {
 // ✅ Test 4: Get 5 exercises for a target muscle, e.g., "biceps"
 app.get("/test/target/biceps", async (req, res) => {
   try {
-    const response = await fetch(`${BASE_URL}/exercises/target/biceps`, {
-      headers: HEADERS,
+    const response = await fetch(`${EXERCISEDB_URL}/exercises/target/biceps`, {
+      headers: EXERCISEDB_HEADERS,
     });
     if (!response.ok)
       return res
@@ -111,7 +116,7 @@ app.get("/test/target/biceps", async (req, res) => {
 // ✅ Test 5: Get 5 exercises with image (GIF URL) included
 app.get("/test/exercises-with-gif", async (req, res) => {
   try {
-    const response = await fetch(`${BASE_URL}/exercises`, { headers: HEADERS });
+    const response = await fetch(`${EXERCISEDB_URL}/exercises`, { headers: EXERCISEDB_HEADERS });
     if (!response.ok)
       return res
         .status(response.status)
@@ -133,6 +138,36 @@ app.get("/test/exercises-with-gif", async (req, res) => {
   }
 });
 
+app.get("/test/bmi", async (req, res) => {
+  const { height, weight, age } = req.query;
+
+  if (!height || !weight || !age) {
+    return res.status(400).json({ error: "Height, weight and age are required" });
+  }
+
+  try {
+    const response = await fetch(
+      `${FITNESSCALC_URL}/bmi?age=${age}&height=${height}&weight=${weight}`,
+      {
+        method: "GET",
+        headers: FITNESSCALC_HEADERS,
+      }
+    );
+
+    if (!response.ok) {
+      return res
+        .status(response.status)
+        .json({ error: `API error ${response.status}` });
+    }
+
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 // Start the server on port 3000
 app.listen(3000, () => {
   console.log("✅ Server running at http://localhost:3000/");
@@ -142,4 +177,5 @@ app.listen(3000, () => {
   console.log("➡️  /test/targets");
   console.log("➡️  /test/target/biceps");
   console.log("➡️  /test/exercises-with-gif");
+  console.log("➡️  /test/bmi?height=180&weight=75");
 });
