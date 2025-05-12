@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
+const axios = require('axios');
 
 const app = express();
 
@@ -17,12 +18,12 @@ const EXERCISEDB_HEADERS = {
   "X-RapidAPI-Key": "40cd5fb34dmsh295a23ff5312e1bp119f01jsn0e8265eda1c2", // Replace with your actual key
   "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
 };
-
-const FITNESSCALC_URL = "https://fitness-calculator.p.rapidapi.com";
-const FITNESSCALC_HEADERS = {
-  "X-RapidAPI-Key": "40cd5fb34dmsh295a23ff5312e1bp119f01jsn0e8265eda1c2", // Replace with your actual key
-  "X-RapidAPI-Host": "fitness-calculator.p.rapidapi.com",
+const BMICALC_URL = "https://smart-body-mass-index-calculator-bmi.p.rapidapi.com";
+const BMICALC_HEADERS = {
+  "X-RapidAPI-Key": "015c52bb70msh0ca69c0c0da9fa3p13dce6jsnc05c3d5b2905",
+  "X-RapidAPI-Host": "smart-body-mass-index-calculator-bmi.p.rapidapi.com",
 };
+
 // const { EXERCISEDB_URL, EXERCISEDB_HEADERS } = require("./constant");
 // require("dotenv").config(); // Load env vars
 
@@ -35,6 +36,71 @@ const FITNESSCALC_HEADERS = {
 
 // Endpoint to test the ExerciseDB API
 // Example 1: Fetch only 5 exercises
+app.get('/api/BMI/metric', (req, res) => {
+    const { kg, cm } = req.query;
+
+    // Validate the input
+    if (!kg || !cm || kg <= 0 || cm <= 0) {
+        return res.status(400).json({ message: 'Invalid input parameters' });
+    }
+
+    // Convert cm to meters
+    const heightInMeters = cm / 100;
+    const bmi = kg / (heightInMeters ** 2);
+    
+    // Determine BMI status
+    let status = '';
+    if (bmi < 18.5) {
+        status = 'Underweight';
+    } else if (bmi >= 18.5 && bmi < 25) {
+        status = 'Normal';
+    } else if (bmi >= 25 && bmi < 30) {
+        status = 'Overweight';
+    } else if (bmi >= 30 && bmi < 40) {
+        status = 'Obese';
+    } else {
+        status = 'Severely Obese';
+    }
+
+    return res.json({
+        bmi: bmi.toFixed(2),
+        status: status
+    });
+});
+
+// BMI calculation for Imperial Units (lbs, inches)
+app.get('/api/BMI/imperial', (req, res) => {
+    const { lbs, inches } = req.query;
+
+    // Validate the input
+    if (!lbs || !inches || lbs <= 0 || inches <= 0) {
+        return res.status(400).json({ message: 'Invalid input parameters' });
+    }
+
+    // Convert inches to meters
+    const heightInMeters = inches * 0.0254;
+    const bmi = (lbs / 2.20462) / (heightInMeters ** 2); // Convert pounds to kg
+
+    // Determine BMI status
+    let status = '';
+    if (bmi < 18.5) {
+        status = 'Underweight';
+    } else if (bmi >= 18.5 && bmi < 25) {
+        status = 'Normal';
+    } else if (bmi >= 25 && bmi < 30) {
+        status = 'Overweight';
+    } else if (bmi >= 30 && bmi < 40) {
+        status = 'Obese';
+    } else {
+        status = 'Severely Obese';
+    }
+
+    return res.json({
+        bmi: bmi.toFixed(2),
+        status: status
+    });
+});
+
 app.get("/test/exercises", async (req, res) => {
   try {
     const response = await fetch(`${EXERCISEDB_URL}/exercises`, {
@@ -138,7 +204,7 @@ app.get("/test/exercises-with-gif", async (req, res) => {
   }
 });
 
-app.get("/test/bmi", async (req, res) => {
+/*app.get("/test/bmi", async (req, res) => {
   const { height, weight, age } = req.query;
 
   if (!height || !weight || !age) {
@@ -161,6 +227,52 @@ app.get("/test/bmi", async (req, res) => {
     }
 
     const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+*/
+app.get("/test/bmi", async (req, res) => {
+  const { age, height, weight } = req.query;
+
+  // Validate if all parameters are provided
+  if (!age || !height || !weight) {
+    return res.status(400).json({ error: "Age, height, and weight are required" });
+  }
+
+  // Validate if parameters are numbers and within valid ranges
+  if (isNaN(age) || isNaN(height) || isNaN(weight)) {
+    return res.status(400).json({ error: "Age, height, and weight must be numbers" });
+  }
+
+  if (age < 0 || age > 80) {
+    return res.status(400).json({ error: "Age must be between 0 and 80" });
+  }
+  if (weight < 40 || weight > 160) {
+    return res.status(400).json({ error: "Weight must be between 40 and 160 kg" });
+  }
+  if (height < 130 || height > 230) {
+    return res.status(400).json({ error: "Height must be between 130 and 230 cm" });
+  }
+
+  try {
+    const response = await fetch(
+      `${FITNESSCALC_URL}/bmi?age=${age}&height=${height}&weight=${weight}`,
+      {
+        method: "GET",
+        headers: FITNESSCALC_HEADERS,
+      }
+    );
+
+    const text = await response.text();  // Log the response body for debugging
+    console.log(text);  // Log raw response from the API
+
+    if (!response.ok) {
+      return res.status(response.status).json({ error: text });
+    }
+
+    const data = JSON.parse(text);
     res.json(data);
   } catch (err) {
     res.status(500).json({ error: err.message });
