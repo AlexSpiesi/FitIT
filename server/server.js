@@ -1,0 +1,145 @@
+const express = require("express");
+const path = require("path");
+const bodyParser = require("body-parser");
+
+const app = express();
+
+// Parse urlencoded bodies
+app.use(bodyParser.json());
+
+// Serve static content in directory 'files'
+app.use(express.static(path.join(__dirname, "files")));
+
+const fetch = require("node-fetch");
+
+const BASE_URL = "https://exercisedb.p.rapidapi.com";
+const HEADERS = {
+  "X-RapidAPI-Key": "40cd5fb34dmsh295a23ff5312e1bp119f01jsn0e8265eda1c2", // Replace with your actual key
+  "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
+};
+
+// const { BASE_URL, HEADERS } = require("./constant");
+// require("dotenv").config(); // Load env vars
+
+// const BASE_URL = "https://exercisedb.p.rapidapi.com";
+// const HEADERS = {
+//   "X-RapidAPI-Key": process.env.RAPID_API_KEY,
+//   "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
+// };
+
+
+// Endpoint to test the ExerciseDB API
+// Example 1: Fetch only 5 exercises
+app.get("/test/exercises", async (req, res) => {
+  try {
+    const response = await fetch(`${BASE_URL}/exercises`, {
+      method: "GET",
+      headers: HEADERS,
+    });
+
+    if (!response.ok) {
+      return res
+        .status(response.status)
+        .json({ error: `API error ${response.status}` });
+    }
+
+    const data = await response.json();
+    res.json(data); // only return first 5
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Example 2: Fetch list of body parts
+app.get("/test/bodyparts", async (req, res) => {
+  try {
+    const response = await fetch(`${BASE_URL}/exercises/bodyPartList`, {
+      method: "GET",
+      headers: HEADERS,
+    });
+
+    if (!response.ok) {
+      return res
+        .status(response.status)
+        .json({ error: `API error ${response.status}` });
+    }
+
+    const data = await response.json();
+    res.json(data); // usually a short list anyway
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+// Example 3: List all available target muscles (e.g. "biceps", "abs")
+app.get("/test/targets", async (req, res) => {
+  try {
+    const response = await fetch(`${BASE_URL}/exercises/targetList`, {
+      method: "GET",
+      headers: HEADERS,
+    });
+
+    if (!response.ok) {
+      return res
+        .status(response.status)
+        .json({ error: `API error ${response.status}` });
+    }
+
+    const data = await response.json();
+    res.json(data); // usually a short list anyway
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+// ✅ Test 4: Get 5 exercises for a target muscle, e.g., "biceps"
+app.get("/test/target/biceps", async (req, res) => {
+  try {
+    const response = await fetch(`${BASE_URL}/exercises/target/biceps`, {
+      headers: HEADERS,
+    });
+    if (!response.ok)
+      return res
+        .status(response.status)
+        .json({ error: `API error ${response.status}` });
+
+    const data = await response.json();
+    res.json(data.slice(0, 5)); // Limit output
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ✅ Test 5: Get 5 exercises with image (GIF URL) included
+app.get("/test/exercises-with-gif", async (req, res) => {
+  try {
+    const response = await fetch(`${BASE_URL}/exercises`, { headers: HEADERS });
+    if (!response.ok)
+      return res
+        .status(response.status)
+        .json({ error: `API error ${response.status}` });
+
+    const data = await response.json();
+
+    // Extract only name + gifUrl of the first 5 exercises
+    const shortList = data.slice(0, 5).map((ex) => ({
+      name: ex.name,
+      gifUrl: ex.gifUrl,
+      target: ex.target,
+      equipment: ex.equipment,
+    }));
+
+    res.json(shortList);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Start the server on port 3000
+app.listen(3000, () => {
+  console.log("✅ Server running at http://localhost:3000/");
+  console.log("Test endpoints:");
+  console.log("➡️  /test/exercises");
+  console.log("➡️  /test/bodyparts");
+  console.log("➡️  /test/targets");
+  console.log("➡️  /test/target/biceps");
+  console.log("➡️  /test/exercises-with-gif");
+});
