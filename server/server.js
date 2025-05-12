@@ -18,6 +18,11 @@ const EXERCISEDB_HEADERS = {
   "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
 };
 
+const CALORIESBURNED_URL = "https://api.api-ninjas.com/v1/caloriesburned";
+const CALORIESBURNED_HEADERS = {
+  "X-API-Key": "9JlQa4re5pM7r2rr75w3AQ==MywgMIPRYZTCDl0y", // Replace with your actual key
+  // "X-API-Host": "exercisedb.p.rapidapi.com",
+};
 const FITNESSCALC_URL = "https://fitness-calculator.p.rapidapi.com";
 const FITNESSCALC_HEADERS = {
   "X-RapidAPI-Key": "40cd5fb34dmsh295a23ff5312e1bp119f01jsn0e8265eda1c2", // Replace with your actual key
@@ -31,7 +36,6 @@ const FITNESSCALC_HEADERS = {
 //   "X-RapidAPI-Key": process.env.RAPID_API_KEY,
 //   "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
 // };
-
 
 // Endpoint to test the ExerciseDB API
 // Example 1: Fetch only 5 exercises
@@ -116,7 +120,9 @@ app.get("/test/target/biceps", async (req, res) => {
 // ✅ Test 5: Get 5 exercises with image (GIF URL) included
 app.get("/test/exercises-with-gif", async (req, res) => {
   try {
-    const response = await fetch(`${EXERCISEDB_URL}/exercises`, { headers: EXERCISEDB_HEADERS });
+    const response = await fetch(`${EXERCISEDB_URL}/exercises`, {
+      headers: EXERCISEDB_HEADERS,
+    });
     if (!response.ok)
       return res
         .status(response.status)
@@ -142,7 +148,9 @@ app.get("/test/bmi", async (req, res) => {
   const { height, weight, age } = req.query;
 
   if (!height || !weight || !age) {
-    return res.status(400).json({ error: "Height, weight and age are required" });
+    return res
+      .status(400)
+      .json({ error: "Height, weight and age are required" });
   }
 
   try {
@@ -171,9 +179,9 @@ app.get("/test/idealweight", async (req, res) => {
   const { height, gender } = req.query;
 
   if (!height || !gender) {
-    return res
-      .status(400)
-      .json({ error: "Height and gender are required (e.g., ?height=175&gender=male)" });
+    return res.status(400).json({
+      error: "Height and gender are required (e.g., ?height=175&gender=male)",
+    });
   }
 
   try {
@@ -199,6 +207,42 @@ app.get("/test/idealweight", async (req, res) => {
   }
 });
 
+app.get("/test/calories", async (req, res) => {
+  const { activity, weight, duration } = req.query;
+
+  if (!activity) {
+    return res
+      .status(400)
+      .json({ error: "Query parameter 'activity' is required" });
+  }
+
+  // const url = new URL("https://api.api-ninjas.com/v1/caloriesburned");
+  // url.searchParams.append("activity", activity);
+  // if (weight) url.searchParams.append("weight", weight);
+  // if (duration) url.searchParams.append("duration", duration);
+
+  try {
+    const response = await fetch(
+      `${CALORIESBURNED_URL}?activity=${activity}&weight=${weight}&duration=${duration}`,
+      {
+        method: "GET",
+        headers: CALORIESBURNED_HEADERS,
+      }
+    );
+
+    if (!response.ok) {
+      const text = await response.text(); // wichtig zum Debuggen!
+      return res
+        .status(response.status)
+        .json({ error: `API error ${response.status}`, details: text });
+    }
+
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // Start the server on port 3000
 app.listen(3000, () => {
@@ -212,5 +256,4 @@ app.listen(3000, () => {
   console.log("➡️  /test/bmi?height=180&weight=75");
   console.log("➡️  /test/bmi?height=180&weight=75");
   console.log("➡️  /test/idealweight?height=175&gender=male");
-
 });
