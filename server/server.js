@@ -125,7 +125,7 @@ app.get("/test/exercises-with-gif", async (req, res) => {
     const data = await response.json();
 
     // Extract only name + gifUrl of the first 5 exercises
-    const shortList = data.slice(0, 5).map((ex) => ({
+    const shortList = data.map((ex) => ({
       name: ex.name,
       gifUrl: ex.gifUrl,
       target: ex.target,
@@ -167,6 +167,38 @@ app.get("/test/bmi", async (req, res) => {
   }
 });
 
+app.get("/test/idealweight", async (req, res) => {
+  const { height, gender } = req.query;
+
+  if (!height || !gender) {
+    return res
+      .status(400)
+      .json({ error: "Height and gender are required (e.g., ?height=175&gender=male)" });
+  }
+
+  try {
+    const response = await fetch(
+      `${FITNESSCALC_URL}/idealweight?gender=${gender}&height=${height}`,
+      {
+        method: "GET",
+        headers: FITNESSCALC_HEADERS,
+      }
+    );
+
+    if (!response.ok) {
+      const text = await response.text(); // wichtig zum Debuggen!
+      return res
+        .status(response.status)
+        .json({ error: `API error ${response.status}`, details: text });
+    }
+
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 // Start the server on port 3000
 app.listen(3000, () => {
@@ -178,4 +210,7 @@ app.listen(3000, () => {
   console.log("➡️  /test/target/biceps");
   console.log("➡️  /test/exercises-with-gif");
   console.log("➡️  /test/bmi?height=180&weight=75");
+  console.log("➡️  /test/bmi?height=180&weight=75");
+  console.log("➡️  /test/idealweight?height=175&gender=male");
+
 });
