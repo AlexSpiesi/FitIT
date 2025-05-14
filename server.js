@@ -1,4 +1,4 @@
-const express = require("express");
+/*const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const axios = require('axios');
@@ -240,7 +240,7 @@ app.get("/test/exercises-with-gif", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-*/
+
 app.get("/test/bmi", async (req, res) => {
   const { age, height, weight } = req.query;
 
@@ -369,3 +369,19 @@ app.listen(3000, () => {
   console.log("➡️  /test/bmi?height=180&weight=75");
   console.log("➡️  /test/idealweight?height=175&gender=male");
 });
+*/
+require('dotenv').config();
+const express = require('express');
+const app = express();
+
+const exerciseRoutes = require('./routes/exerciseRoutes');
+const healthRoutes = require('./routes/healthRoutes');
+
+app.use(express.json());
+
+// Mount routes
+app.use('/api/exercises', exerciseRoutes);
+app.use('/api/health', healthRoutes);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
