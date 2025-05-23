@@ -1,0 +1,21 @@
+/* Our basic header style -> templates are confusing */
+.logo-container{
+    display: flex;
+
+}
+.logo-container h1{
+    margin: 0;
+    line-height: 3;
+    color: rgba(26, 194, 255, 1);
+    
+}
+.logo-img{
+    height: 80px;
+    width: auto;
+    display: block;
+}
+
+.header-nav{
+   padding: 5px 20px;
+   box-shadow: 0 4px 4px;
+}

@@ -1,0 +1,17 @@
+/* Base style rules, mage sure to implement in other stylesheets, dont add random stuff, ty */
+
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+body {
+    background-color: rgba(30, 30, 30, 1);
+}
+
+h1 {
+    color: white;
+    font-family: "Russo One", sans-serif;
+}
+button{
+    font-family: "Russo One", sans-serif;
+}
+a {
+    color: rgba(26, 194, 255, 1);
+}
