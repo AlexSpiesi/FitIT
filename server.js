@@ -375,19 +375,18 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
-app.use(express.static(path.join(__dirname, `files`)));
 
-app.get(`/`, (req, res) => {
-  res.sendFile(path.join(__dirname, `files`, `index.html`))
-})  
+app.use(express.static(path.join(__dirname, `files`)));
+app.use(express.json());
 
 const exerciseRoutes = require('./routes/exerciseRoutes');
 const healthRoutes = require('./routes/healthRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 
 app.use(express.json());
 
-// Mount routes
+app.use('/api/users', userRoutes);
 app.use('/api/exercises', exerciseRoutes);
 app.use('/api/health', healthRoutes);
 
