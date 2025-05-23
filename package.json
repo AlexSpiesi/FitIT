@@ -4,9 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-  "start": "node app.js",
-  "dev": "nodemon app.js"
-},
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -18,7 +18,8 @@
     "express": "^5.1.0",
     "express-session": "^1.18.1",
     "mysql2": "^3.14.1",
-    "node-fetch": "^2.7.0"
+    "node-fetch": "^2.7.0",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

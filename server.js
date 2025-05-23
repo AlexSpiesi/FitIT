@@ -373,13 +373,16 @@ app.listen(3000, () => {
 require('dotenv').config();
 const express = require('express');
 const app = express();
+const path = require('path');
+
+app.use(express.static(path.join(__dirname, `files`)));
+
+app.get(`/`, (req, res) => {
+  res.sendFile(path.join(__dirname, `files`, `index.html`))
+})  
 
 const exerciseRoutes = require('./routes/exerciseRoutes');
 const healthRoutes = require('./routes/healthRoutes');
-
-app.get('/', (req, res) => {
-  res.send('Fitness Tracker is running');
-});
 
 
 app.use(express.json());
