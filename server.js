@@ -377,6 +377,11 @@ const app = express();
 const exerciseRoutes = require('./routes/exerciseRoutes');
 const healthRoutes = require('./routes/healthRoutes');
 
+app.get('/', (req, res) => {
+  res.send('Fitness Tracker is running');
+});
+
+
 app.use(express.json());
 
 // Mount routes
