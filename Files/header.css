@@ -15,7 +15,10 @@
     display: block;
 }
 
-.header-nav{
+.header-nav {
    padding: 5px 20px;
    box-shadow: 0 4px 4px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
 }
