@@ -56,7 +56,25 @@ function authenticateToken(req, res, next) {
 
 // Example protected route
 router.get('/profile', authenticateToken, (req, res) => {
-  res.json({ message: 'This is a protected route', user: req.user });
+  const userId = req.user.id;
+  db.get('SELECT id, email, age, gender FROM users WHERE id = ?', [userId], (err, user) => {
+    if (err || !user) return res.status(404).json({ error: 'User not found' });
+    res.json({ user });
+  });
+});
+
+// Update user profile (weight, height)
+router.put('/profile', authenticateToken, (req, res) => {
+  const userId = req.user.id;
+  const { weight, height } = req.body;
+  db.run(
+    'UPDATE users SET weight = ?, height = ? WHERE id = ?',
+    [weight, height, userId],
+    function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ message: 'Profile updated' });
+    }
+  );
 });
 
 // (Optional) List all users (for testing, not protected)

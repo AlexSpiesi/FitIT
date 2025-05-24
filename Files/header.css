@@ -22,3 +22,12 @@
    justify-content: space-between;
    align-items: center;
 }
+.header-nav button {
+   background-color: rgba(26, 194, 255, 1);
+   color: white;
+   border: none;
+   padding: 10px 20px;
+   cursor: pointer;
+   font-size: 16px;
+   border-radius: 5px;
+}

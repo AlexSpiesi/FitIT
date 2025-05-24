@@ -8,8 +8,11 @@ db.serialize(() => {
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
         age INTEGER,
-        gender TEXT NOT NULL
+        gender TEXT NOT NULL,
+        weight REAL,
+        height REAL
     )`);
+    //Real = float in SQLite
         
     const stmt = db.prepare(`
         INSERT INTO users (email, password, age, gender)

@@ -1,0 +1,49 @@
+@import "base.css";
+@import url(header.css);
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    font-family: sans-serif;
+}
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.profile-container h1 {
+    margin-bottom: 20px;
+}
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+.profile-form input,
+.profile-form button,
+.profile-form select {
+    width: 100%;
+    box-sizing: border-box;
+}
+.profile-form input {
+    margin-bottom: 10px;
+    padding: 8px;
+    font-size: 1em;
+}
+.profile-form select {
+    margin-bottom: 10px;
+    padding: 8px;
+    font-size: 1em;
+}
+.profile-form button {
+    padding: 8px;
+    font-size: 1em;
+}
