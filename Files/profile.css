@@ -43,7 +43,40 @@ main {
     padding: 8px;
     font-size: 1em;
 }
-.profile-form button {
+.profile-form button,
+#calc-bmi-btn {
     padding: 8px;
     font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.profile-form button:hover,
+#calc-bmi-btn:hover {
+    background-color: #1399c7;
+}
+
+.bmi-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.bmi-value {
+    width: 300px;
+    margin: 0 auto 10px auto;
+    text-align: center;
+    font-size: 1.1em;
+    color: #1ac2ff;
+    font-weight: bold;
+}
+#calc-bmi-btn {
+    margin-top: 20px;
 }

@@ -3,15 +3,15 @@ const router = express.Router();
 const healthService = require('../services/healthService');
 
 // BMI endpoint
-router.get('/bmi', async (req, res) => {
-  const { age, height, weight } = req.query;
+router.get('/BMI/metric', async (req, res) => {
+  const { kg, cm } = req.query;
 
-  if (!age || !height || !weight) {
+  if (!kg || !cm) {
     return res.status(400).json({ error: 'Missing required parameters' });
   }
 
   try {
-    const result = await healthService.getBMI(age, height, weight);
+    const result = await healthService.getBMI(kg, cm);
     res.json(result);
   } catch (err) {
     res.status(500).json({ error: err.message });

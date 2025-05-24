@@ -10,10 +10,10 @@ const getCalories = async (activity, weight, duration) => {
   return await res.json();
 };
 
-const getBMI = async (age, height, weight) => {
-  const res = await fetch(`${BMI_URL}/bmi?age=${age}&height=${height}&weight=${weight}`, {
+const getBMI = async (kg, cm) => {
+  const res = await fetch(`${BMI_URL}/api/BMI/metric?kg=${kg}&cm=${cm}`, {
     headers: {
-      'X-RapidAPI-Key': process.env.BMI_API_KEY,
+      'X-RapidAPI-Key': process.env.RAPID_API_KEY,
       'X-RapidAPI-Host': 'smart-body-mass-index-calculator-bmi.p.rapidapi.com'
     }
   });

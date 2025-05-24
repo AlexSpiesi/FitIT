@@ -10,7 +10,9 @@ db.serialize(() => {
         age INTEGER,
         gender TEXT NOT NULL,
         weight REAL,
-        height REAL
+        height REAL,
+        bmi REAL,
+        bmi_category TEXT
     )`);
     //Real = float in SQLite
         

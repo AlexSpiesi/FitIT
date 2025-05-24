@@ -57,19 +57,18 @@ function authenticateToken(req, res, next) {
 // Example protected route
 router.get('/profile', authenticateToken, (req, res) => {
   const userId = req.user.id;
-  db.get('SELECT id, email, age, gender FROM users WHERE id = ?', [userId], (err, user) => {
+  db.get('SELECT id, email, age, gender, weight, height, bmi, bmi_category FROM users WHERE id = ?', [userId], (err, user) => {
     if (err || !user) return res.status(404).json({ error: 'User not found' });
     res.json({ user });
   });
 });
 
-// Update user profile (weight, height)
 router.put('/profile', authenticateToken, (req, res) => {
   const userId = req.user.id;
-  const { weight, height } = req.body;
+  const { weight, height, bmi, bmi_category } = req.body;
   db.run(
-    'UPDATE users SET weight = ?, height = ? WHERE id = ?',
-    [weight, height, userId],
+    'UPDATE users SET weight = ?, height = ?, bmi = ?, bmi_category = ? WHERE id = ?',
+    [weight, height, bmi, bmi_category, userId],
     function (err) {
       if (err) return res.status(500).json({ error: err.message });
       res.json({ message: 'Profile updated' });
