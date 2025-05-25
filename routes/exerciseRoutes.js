@@ -31,4 +31,41 @@ router.get('/targets', async (req, res) => {
   }
 });
 
+router.get('/bodypart/:part', async (req, res) => {
+  const { part } = req.params;
+  try {
+    const exercises = await exerciseService.fetchByBodyPart(req.params.part);
+    res.json(exercises.slice(0, 10)); // z. B. nur die ersten 10 anzeigen
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get('/equipment', async (req, res) => {
+  try {
+    const list = await exerciseService.fetchEquipmentList();
+    res.json(list);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get('/equipment/:type', async (req, res) => {
+  try {
+    const exercises = await exerciseService.fetchByEquipment(req.params.type);
+    res.json(exercises.slice(0, 10));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get('/target/:target', async (req, res) => {
+  try {
+    const exercises = await exerciseService.fetchByTarget(req.params.target);
+    res.json(exercises.slice(0, 10));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

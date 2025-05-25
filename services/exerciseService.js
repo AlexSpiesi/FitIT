@@ -21,8 +21,36 @@ const fetchTargets = async () => {
   return await res.json();
 };
 
+const fetchByBodyPart = async (part) => {
+  const response = await fetch(`${EXERCISEDB_URL}/exercises/bodyPart/${part}`, {headers:HEADERS });
+  if (!response.ok) throw new Error('Fehler beim Abrufen der Übungen');
+  return response.json();
+};
+
+const fetchEquipmentList = async () => {
+  const response = await fetch(`${EXERCISEDB_URL}/exercises/equipmentList`, { headers: HEADERS });
+  if (!response.ok) throw new Error('Fehler beim Abrufen der Equipment-Liste');
+  return response.json();
+};
+
+const fetchByEquipment = async (type) => {
+  const response = await fetch(`${EXERCISEDB_URL}/exercises/equipment/${type}`, { headers: HEADERS });
+  if (!response.ok) throw new Error('Fehler beim Abrufen nach Equipment');
+  return response.json();
+};
+
+const fetchByTarget = async (target) => {
+  const response = await fetch(`${EXERCISEDB_URL}/exercises/target/${target}`, { headers: HEADERS });
+  if (!response.ok) throw new Error('Fehler beim Abrufen nach Target');
+  return response.json();
+};
+
 module.exports = {
+  fetchByTarget,
+  fetchEquipmentList,
+  fetchByEquipment,
   fetchAllExercises,
   fetchBodyParts,
   fetchTargets,
+  fetchByBodyPart,
 };
