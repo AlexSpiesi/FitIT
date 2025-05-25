@@ -16,6 +16,27 @@ db.serialize(async() => {
         bmi_category TEXT
     )`);
     //Real = float in SQLite
+    db.run(`
+    CREATE TABLE IF NOT EXISTS workouts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      name TEXT NOT NULL,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    )
+  `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS workout_exercises (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      workout_id INTEGER NOT NULL,
+      exercise_id TEXT NOT NULL,
+      name TEXT NOT NULL,
+      gif_url TEXT,
+      description TEXT,
+      FOREIGN KEY (workout_id) REFERENCES workouts(id)
+    )
+  `);
+
 
     const hashedPassword = await bcrypt.hash('password1', 10);
         

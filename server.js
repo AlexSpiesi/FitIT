@@ -382,13 +382,14 @@ app.use(express.json());
 const exerciseRoutes = require('./routes/exerciseRoutes');
 const healthRoutes = require('./routes/healthRoutes');
 const userRoutes = require('./routes/userRoutes');
-
+const workoutRoutes = require('./routes/workoutRoutes');
 
 app.use(express.json());
 
 app.use('/api/users', userRoutes);
 app.use('/api/exercises', exerciseRoutes);
 app.use('/api/health', healthRoutes);
+app.use('/api/workouts', workoutRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));

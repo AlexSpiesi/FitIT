@@ -5,7 +5,9 @@ const exerciseService = require('../services/exerciseService');
 router.get('/', async (req, res) => {
   try {
     const exercises = await exerciseService.fetchAllExercises();
-    res.json(exercises.slice(0, 5)); // Limit output
+    const shuffled = exercises.sort(() => 0.5 - Math.random());
+    const selected = shuffled.slice(0, 5);
+    res.json(selected);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
