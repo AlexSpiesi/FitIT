@@ -27,6 +27,25 @@ router.post('/', (req, res) => {
   });
 });
 
+router.post('/:workoutId/exercises', (req, res) => {
+  const workoutId = req.params.workoutId;
+  const { exercise_id, name, gif_url, description } = req.body;
+
+  if (!exercise_id || !name) {
+    return res.status(400).json({ error: 'exercise_id and name are required' });
+  }
+
+  const sql = `
+    INSERT INTO workout_exercises (workout_id, exercise_id, name, gif_url, description)
+    VALUES (?, ?, ?, ?, ?)
+  `;
+
+  db.run(sql, [workoutId, exercise_id, name, gif_url, description], function (err) {
+    if (err) return res.status(500).json({ error: err.message });
+    res.status(201).json({ message: 'Exercise added to workout', id: this.lastID });
+  });
+});
+
 router.get('/user/:user_id', (req, res) => {
   const userId = req.params.user_id;
 
@@ -86,6 +105,27 @@ router.delete('/:workout_id', (req, res) => {
       res.status(200).json({ message: 'Workout gelöscht' });
     });
   });
+});
+router.put('/:id/exercises', (req, res) => {
+  const workoutId = req.params.id;
+  const { exercise } = req.body;
+
+  if (!exercise || !exercise.id || !exercise.name || !exercise.gifUrl) {
+    return res.status(400).json({ error: 'Ungültige Übungsdaten' });
+  }
+
+  const description = (exercise.instructions || []).join('\n');
+
+  db.run(
+    `INSERT INTO workout_exercises (workout_id, exercise_id, name, gif_url, description)
+     VALUES (?, ?, ?, ?, ?)`,
+    [workoutId, exercise.id, exercise.name, exercise.gifUrl, description],
+    function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+
+      res.status(200).json({ message: 'Übung hinzugefügt', id: this.lastID });
+    }
+  );
 });
 
 module.exports = router;
