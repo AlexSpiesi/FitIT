@@ -67,4 +67,25 @@ router.get('/user/:user_id', (req, res) => {
   });
 });
 
+// DELETE /api/workouts/:workout_id
+router.delete('/:workout_id', (req, res) => {
+  const workoutId = req.params.workout_id;
+
+  // Zuerst: zugehörige Übungen löschen
+  db.run(`DELETE FROM workout_exercises WHERE workout_id = ?`, [workoutId], function (err) {
+    if (err) return res.status(500).json({ error: err.message });
+
+    // Dann: Workout selbst löschen
+    db.run(`DELETE FROM workouts WHERE id = ?`, [workoutId], function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+
+      if (this.changes === 0) {
+        return res.status(404).json({ error: 'Workout nicht gefunden' });
+      }
+
+      res.status(200).json({ message: 'Workout gelöscht' });
+    });
+  });
+});
+
 module.exports = router;
