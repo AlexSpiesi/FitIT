@@ -10,50 +10,52 @@
 <body>
     <header>
         <nav class="header-nav">
-           <div class="logo-container">
-            <a href="index.html">
-                <img src="images/Logo.png" alt="FitIT" class="logo-img">
-            </a>
-             <h1>FitIT</h1>
-            
-           </div>
+            <div class="logo-container">
+                <a href="index.html">
+                    <img src="images/Logo.png" alt="FitIT" class="logo-img">
+                </a>
+                <h1>FitIT</h1>
+            </div>
         </nav>
     </header>
     <main>
-        <div class="form-layout">
+        <section class="form-layout">
             <img src="images/Fat.png" alt="Fat Bob" class="side-image" />
-        
-        <article class="signup-container">
-            <h1>Create your account</h1>
-            <form class="signup-form">
-                <div>
-                    <input type="email" placeholder="Email" required />
-                </div>
-                <div>
-                    <input type="password" placeholder="Password" required />
-                </div>
-                <div>
-                    <input type="password" placeholder="Repeat Password" required />
-                </div>
-                <div>
-                    <select required>
-                        <option value="">Select Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
-                </div>
-                <div>
-                    <input type="number" placeholder="Age" min="0" />
-                </div>
-                <button type="submit">Create Account</button>
-            </form>
-            <p class="signup-prompt">
-            Allready got an account? <a href="login.html">Log in</a>
-        </p>
-        </article>
-
-        <img src="images/Fit.png" alt="Fit Bob" class="side-image" />
-        </div>
+            <article class="signup-container">
+                <h2>Create your account</h2>
+                <form class="signup-form">
+                    <div>
+                        <label for="email"></label>
+                        <input id="email" type="email" placeholder="Email" required />
+                    </div>
+                    <div>
+                        <label for="password"></label>
+                        <input id="password" type="password" placeholder="Password" required />
+                    </div>
+                    <div>
+                        <label for="repeat-password"></label>
+                        <input id="repeat-password" type="password" placeholder="Repeat Password" required />
+                    </div>
+                    <div>
+                        <label for="gender"></label>
+                        <select id="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="age"></label>
+                        <input id="age" type="number" placeholder="Age" min="0" />
+                    </div>
+                    <button type="submit">Create Account</button>
+                </form>
+                <p class="signup-prompt">
+                    Already got an account? <a href="login.html">Log in</a>
+                </p>
+            </article>
+            <img src="images/Fit.png" alt="Fit Bob" class="side-image" />
+        </section>
     </main>
     <script src="signup.js"></script>
 </body>

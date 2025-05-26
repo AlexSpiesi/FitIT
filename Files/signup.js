@@ -25,9 +25,9 @@ document.querySelector('.signup-form').addEventListener('submit', async (e) => {
   const data = await res.json();
   if (res.ok) {
     localStorage.setItem('token', data.token);
-    alert('Registration successful!');
+    console.log('Registration successful!');
     window.location.href = "dashboard.html";
   } else {
-    alert(data.error || 'Registration failed');
+    console.log(data.error || 'Registration failed');
   }
 });

@@ -39,9 +39,9 @@ document.querySelector('.profile-form').addEventListener('submit', async (e) => 
     });
     const data = await res.json();
     if (res.ok) {
-        alert('Profile updated!');
+        console.log('Profile updated!');
     } else {
-        alert(data.error || 'Failed to update profile');
+        console.log(data.error || 'Failed to update profile');
     }
 });
 
@@ -51,7 +51,7 @@ document.getElementById('calc-bmi-btn').addEventListener('click', async () => {
     const height = document.querySelector('input[name="height"]').value;
     const weight = document.querySelector('input[name="weight"]').value;
     if (!height || !weight) {
-        alert('Please fill in height and weight.');
+        console.log('Please fill in height and weight.');
         return;
     }
     const res = await fetch(`/api/health/BMI/metric?kg=${weight}&cm=${height}`, {
@@ -72,6 +72,6 @@ document.getElementById('calc-bmi-btn').addEventListener('click', async () => {
         });
     } else {
         console.log(data);
-        alert(data.error || JSON.stringify(data) || 'Failed to calculate BMI');
+        console.log(data.error || JSON.stringify(data) || 'Failed to calculate BMI');
     }
 });

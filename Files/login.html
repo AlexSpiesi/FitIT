@@ -10,38 +10,36 @@
 <body>
     <header>
         <nav class="header-nav">
-           <div class="logo-container">
-            <a href="index.html">
-                <img src="images/Logo.png" alt="FitIT" class="logo-img">
-            </a>
-             <h1>FitIT</h1>
-            
-           </div>
+            <div class="logo-container">
+                <a href="index.html">
+                    <img src="images/Logo.png" alt="FitIT" class="logo-img">
+                </a>
+                <h1>FitIT</h1>
+            </div>
         </nav>
     </header>
     <main>
-        <div class="form-layout">
+        <section class="form-layout">
             <img src="images/Fat.png" alt="Fat Bob" class="side-image" />
-        
-        <article class="login-container">
-            <h1>Sign in to FitIT</h1>
-            <form class="login-form">
-                <div>
-                    <input type="email" placeholder="Email" required />
-                </div>
-                <div>
-                    <input type="password" placeholder="Password" required />
-                </div>
-                
-                <button type="submit">Sign In</button>
-            </form>
-            <p class="signup-prompt">
-            New to FitIT? <a href="signup.html">Create an account</a>
-        </p>
-        </article>
-
-        <img src="images/Fit.png" alt="Fit Bob" class="side-image" />
-        </div>
+            <article class="login-container">
+                <h2>Sign in to FitIT</h2>
+                <form class="login-form">
+                    <div>
+                        <label for="email"></label>
+                        <input id="email" type="email" placeholder="Email" required />
+                    </div>
+                    <div>
+                        <label for="password"></label>
+                        <input id="password" type="password" placeholder="Password" required />
+                    </div>
+                    <button type="submit">Sign In</button>
+                </form>
+                <p class="signup-prompt">
+                    New to FitIT? <a href="signup.html">Create an account</a>
+                </p>
+            </article>
+            <img src="images/Fit.png" alt="Fit Bob" class="side-image" />
+        </section>
     </main>
     <script src="login.js"></script>
 </body>

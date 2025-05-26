@@ -9,7 +9,7 @@ body {
     font-family: sans-serif;
 }
 main {
-    flex: 1;
+    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,7 +25,7 @@ main {
 .profile-form {
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 400px;
 }
 .profile-form input,
 .profile-form button,
@@ -36,17 +36,14 @@ main {
 .profile-form input {
     margin-bottom: 10px;
     padding: 8px;
-    font-size: 1em;
 }
 .profile-form select {
     margin-bottom: 10px;
     padding: 8px;
-    font-size: 1em;
 }
 .profile-form button,
 #calc-bmi-btn {
     padding: 8px;
-    font-size: 1em;
     width: 100%;
     box-sizing: border-box;
     color: black;
@@ -64,13 +61,11 @@ main {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 10px;
-    width: 300px;
-    margin: 0 auto;
+    width: 100%;
 }
 
 .bmi-value {
-    width: 300px;
+    width: 100%;
     margin: 0 auto 10px auto;
     text-align: center;
     font-size: 1.1em;
@@ -80,3 +75,18 @@ main {
 #calc-bmi-btn {
     margin-top: 20px;
 }
+
+/* Phone screens */
+@media (max-width: 749px) {
+  .profile-container {
+    width: 100%;
+    padding: 0 10px;
+  }
+  .profile-form,
+  .bmi-row,
+  .bmi-value {
+    width: 100%;
+    min-width: 0;
+  }
+}
+

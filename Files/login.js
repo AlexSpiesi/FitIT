@@ -10,10 +10,10 @@ document.querySelector('.login-form').addEventListener('submit', async (e) => {
       const data = await res.json();
       if (res.ok) {
         localStorage.setItem('token', data.token);
-        alert('Login successful!');
+        console.log('Login successful!');
         // Redirect or update UI as needed
         window.location.href = "dashboard.html";
       } else {
-        alert(data.error || 'Login failed');
+        console.log(data.error || 'Login failed');
       }
     });

@@ -8,7 +8,6 @@
         font-family: sans-serif;
       }
       main {
-        flex: 1;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -24,7 +23,7 @@
       .signup-form {
         display: flex;
         flex-direction: column;
-        width: 300px;
+        width: 400px;
       }
       .signup-form input,
       .signup-form button,
@@ -36,16 +35,13 @@
       .signup-form input {
         margin-bottom: 10px;
         padding: 8px;
-        font-size: 1em;
       }
       .signup-form select {
         margin-bottom: 10px;
         padding: 8px;
-        font-size: 1em;
         }
       .signup-form button {
         padding: 8px;
-        font-size: 1em;
       }
       .signup-prompt{
         color: white;
@@ -58,6 +54,42 @@
         padding: 20px
       }
       .side-image{
-        width: 400px;
+        max-width: 25vw;
+        min-width: 15vw;
         height: auto;
       }
+
+/* Phone screens */
+@media (max-width: 749px) {
+  .side-image {
+    display: none;
+  }
+  .signup-container {
+    width: 100%;
+    padding: 0 10px;
+  }
+  .signup-form {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* Tablet screens */
+@media (min-width: 750px) and (max-width: 1100px) {
+  .form-layout {
+    flex-direction: row;
+    gap: 15px;
+    padding: 10px;
+  }
+  .side-image {
+    min-width: 25vw;
+  }
+  .signup-container {
+    width: 70%;
+    padding: 0 10px;
+  }
+  .signup-form {
+    width: 100%;
+    min-width: 0;
+  }
+}

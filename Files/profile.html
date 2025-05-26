@@ -21,32 +21,38 @@
         </nav>
     </header>
     <main>
-        <article class="profile-container">
-            <h1>Your Profile</h1>
-            <form class="profile-form">
-                <div>
-                    <input type="number" name="weight" placeholder="Weight (kg)" min="0" required />
-                </div>
-                <div>
-                    <input type="number" name="height" placeholder="Height (cm)" min="0" required />
-                </div>
-                <div>
-                    <input type="number" name="age" placeholder="Age" min="0" required readonly />
-                </div>
-                <div>
-                    <select name="gender" required disabled>
-                        <option value="">Select Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
-                </div>
-                <button type="submit">Save Profile</button>
-            </form>
-            <div class="bmi-row">
-                <button type="button" id="calc-bmi-btn" class="profile-form-btn">Calculate BMI</button>
-            </div>
-            <div class="bmi-value" id="bmi-value"></div>
-        </article>
+        <section class="form-layout">
+            <article class="profile-container">
+                <h1>Your Profile</h1>
+                <form class="profile-form">
+                    <div>
+                        <label for="weight"></label>
+                        <input type="number" name="weight" placeholder="Weight (kg)" min="0" required />
+                    </div>
+                    <div>
+                        <label for="height"></label>
+                        <input type="number" name="height" placeholder="Height (cm)" min="0" required />
+                    </div>
+                    <div>
+                        <label for="age"></label>
+                        <input type="number" name="age" placeholder="Age" min="0" required readonly />
+                    </div>
+                    <div>
+                        <label for="gender"></label>
+                        <select name="gender" required disabled>
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <button type="submit">Save Profile</button>
+                </form>
+                    <section class="bmi-row">
+                        <button type="button" id="calc-bmi-btn" class="profile-form-btn">Calculate BMI</button>
+                    </section>
+                <div class="bmi-value" id="bmi-value"></div>
+            </article>
+        </section>
     </main>
     <script src="profile.js"></script>
 </body>
