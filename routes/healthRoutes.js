@@ -1,3 +1,28 @@
+/**
+ * @swagger
+ * /api/health/BMI/metric:
+ *   get:
+ *     summary: Get BMI based on weight and height
+ *     tags: [Health]
+ *     parameters:
+ *       - in: query
+ *         name: kg
+ *         schema:
+ *           type: number
+ *         required: true
+ *       - in: query
+ *         name: cm
+ *         schema:
+ *           type: number
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: BMI Wert
+ *       400:
+ *         description: Missing required parameters
+ *       500:
+ *         description: Server error
+ */
 const express = require('express');
 const router = express.Router();
 const healthService = require('../services/healthService');

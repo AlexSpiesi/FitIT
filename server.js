@@ -375,6 +375,9 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
+const { swaggerUi, specs } = require('./swagger');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
 
 app.use(express.static(path.join(__dirname, `files`)));
 app.use(express.json());

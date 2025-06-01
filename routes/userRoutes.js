@@ -1,3 +1,27 @@
+/**
+ * @swagger
+ * /api/users:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [username, password]
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Benutzer erstellt
+ *       400:
+ *         description: Ungültige Eingabe
+ */
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
