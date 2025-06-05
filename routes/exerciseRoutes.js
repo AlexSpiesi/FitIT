@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const exerciseService = require('../services/exerciseService');
+const db = require('../db'); //NEU!!!!!!!!!!
 
 router.get('/', async (req, res) => {
   try {
@@ -65,6 +66,19 @@ router.get('/target/:target', async (req, res) => {
     res.json(exercises.slice(0, 10));
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// Route: /api/exercises/random NEU!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+router.get('/random', async (req, res) => {
+  try {
+    const [rows] = await db.promise().query(
+      'SELECT * FROM exercises ORDER BY RAND() LIMIT 6'
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch random exercises.' });
   }
 });
 

@@ -1,29 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Debug your body!</title>
-    <link rel="icon" type="image/x-icon" href="/images/Biceps.png">
-    <link rel="stylesheet" href="login.css">
-    
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | FitIT</title>
+  <link rel="stylesheet" href="dashboard.css" />
 </head>
-<body>
-    <header>
-        <nav class="header-nav">
-           <div class="logo-container">
-            <a href="index.html">
-                <img src="images/Logo.png" alt="FitIT" class="logo-img">
-            </a>
-             <h1>FitIT</h1>
-           </div>
-           <a href="profile.html">
-         <button class="profile-button">Profile</button>
-       </a>
-        </nav>
-    </header>
 
-    <script src="dashboard.js"></script>
 <body>
     
+  <aside class="sidebar">
+    <div class="logo-container">
+      <img src="images/Logo.png" alt="FitIT" class="logo-img"/>
+      <h1>FitIT</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="profile.html">Profile</a>
+      <a href="#favorites">Favorite Workouts</a>
+      <a href="#recent">Recent Workouts</a>
+    </nav>
+  </aside>
+
+  <main class="dashboard-content">
+    <section class="progress-section">
+      <h2>Your Weekly Activity</h2>
+      <div id="activity-grid" class="activity-grid"></div>
+    </section>
+
+    <section id="favorites" class="workout-section">
+      <h2>Favorite Workouts</h2>
+      <div class="workout-grid" id="favorite-workouts">
+      </div>
+    </section>
+
+    <section id="recent" class="workout-section">
+      <h2>Recent Workouts</h2>
+      <div class="workout-grid" id="recent-workouts">
+      </div>
+    </section>
+
+    <div class="button-area">
+      <button id="find-workout">Find Workout</button>
+      <button id="create-workout">Create Custom Workout</button>
+    </div>
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
 </html>

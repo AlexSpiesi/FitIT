@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Workout | FitIT</title>
+  <link rel="stylesheet" href="create-workout.css" />
+</head>
+<body>
+  <header>
+    <nav class="header-nav">
+      <div class="logo-container">
+        <a href="index.html">
+          <img src="images/Logo.png" alt="FitIT" class="logo-img" />
+        </a>
+        <h1>FitIT</h1>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="create-section">
+      <h2>Create Your Custom Workout</h2>
+      <form id="workout-form">
+        <input type="text" id="workout-name" placeholder="Workout Name" required />
+        <div id="exercise-list"></div>
+        <button type="submit">Save Workout</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="create-workout.js"></script>
+</body>
+</html>

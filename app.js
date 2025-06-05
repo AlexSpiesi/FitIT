@@ -375,6 +375,10 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
+//NEU!!!!!!!!!!!!!!
+const exerciseRoutes = require('./routes/exerciseRoutes');
+app.use('/api/exercises', exerciseRoutes);
+
 const { swaggerUi, specs } = require('./swagger');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
@@ -396,3 +400,4 @@ app.use('/api/workouts', workoutRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
+

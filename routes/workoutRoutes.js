@@ -311,4 +311,35 @@ router.put("/:id/exercises", (req, res) => {
   );
 });
 
+// Neues Workout speichern
+router.post('/', async (req, res) => {
+  const { name, exercises } = req.body;
+
+  if (!name || !Array.isArray(exercises) || exercises.length === 0) {
+    return res.status(400).json({ error: 'Invalid workout data.' });
+  }
+
+  try {
+    // Workout speichern
+    const [result] = await db.promise().query(
+      'INSERT INTO workouts (name) VALUES (?)',
+      [name]
+    );
+    const workoutId = result.insertId;
+
+    // Übungen verknüpfen
+    for (const exId of exercises) {
+      await db.promise().query(
+        'INSERT INTO workout_exercises (workout_id, exercise_id) VALUES (?, ?)',
+        [workoutId, exId]
+      );
+    }
+
+    res.status(201).json({ success: true, workoutId });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to save workout.' });
+  }
+});
+
 module.exports = router;
