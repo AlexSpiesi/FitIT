@@ -17,16 +17,16 @@
             </a>
              <h1>FitIT</h1>
            </div>
-           <a href="login.html">
-         <button class="sign-in">Sign in</button>
+           <a href="login.html">         
        </a>
+       <button class="sign-in">Sign in</button>
         </nav>
     </header>
 
     <main>
         <section class ="hero">
             <nav class="hero-text">
-                <h1>Your code runs better when you do.</h1>
+                <h2>Your code runs better when you do.</h2>
             </nav>
             <figure class="hero-image">
             <img src="./images/FitShadow.png" alt="FitShadow" />
@@ -57,5 +57,10 @@
             <button class="get-started">Get Started!</button>
         </section>
     </main>
+    <script>
+      document.querySelector('.get-started').addEventListener('click', function() {
+        window.location.href = 'login.html';
+      });
+    </script>
 </body>
 </html>

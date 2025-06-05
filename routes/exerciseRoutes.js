@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const exerciseService = require('../services/exerciseService');
-const db = require('../db'); //NEU!!!!!!!!!!
 
 router.get('/', async (req, res) => {
   try {
     const exercises = await exerciseService.fetchAllExercises();
-    const shuffled = exercises.sort(() => 0.5 - Math.random());
+    /*const shuffled = exercises.sort(() => 0.5 - Math.random());
     const selected = shuffled.slice(0, 5);
-    res.json(selected);
+    res.json(selected);*/
+    res.json(exercises);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -36,7 +36,8 @@ router.get('/bodypart/:part', async (req, res) => {
   const { part } = req.params;
   try {
     const exercises = await exerciseService.fetchByBodyPart(req.params.part);
-    res.json(exercises.slice(0, 10)); // z. B. nur die ersten 10 anzeigen
+    //res.json(exercises.slice(0, 10)); // z. B. nur die ersten 10 anzeigen
+    res.json(exercises);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -54,7 +55,8 @@ router.get('/equipment', async (req, res) => {
 router.get('/equipment/:type', async (req, res) => {
   try {
     const exercises = await exerciseService.fetchByEquipment(req.params.type);
-    res.json(exercises.slice(0, 10));
+    //res.json(exercises.slice(0, 10));
+    res.json(exercises);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -63,22 +65,22 @@ router.get('/equipment/:type', async (req, res) => {
 router.get('/target/:target', async (req, res) => {
   try {
     const exercises = await exerciseService.fetchByTarget(req.params.target);
-    res.json(exercises.slice(0, 10));
+    //res.json(exercises.slice(0, 10));
+    res.json(exercises);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// NEU!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// Rene Test - Get a random set of 6 exercises -> Works, but only opens small window with exercises
 router.get('/random', async (req, res) => {
   try {
-    const [rows] = await db.promise().query(
-      'SELECT * FROM exercises ORDER BY RAND() LIMIT 6'
-    );
-    res.json(rows);
+    const exercises = await exerciseService.fetchAllExercises();
+    const shuffled = exercises.sort(() => 0.5 - Math.random());
+    const selected = shuffled.slice(0, 6);
+    res.json(selected);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to fetch random exercises.' });
+    res.status(500).json({ error: err.message });
   }
 });
 
