@@ -1,15 +1,13 @@
-// === Konfiguration ===
-const DAYS_SHOWN = 70; // Anzahl der Tage im Tracker
+const DAYS_SHOWN = 70;
 
-// === Dummy-Endpunkte (ersetzen durch echte Routen aus deinem Backend) ===
 const API = {
-  getActivity: '/api/health/activity',           // z. B. getTrainingDates
-  getFavorites: '/api/workouts/favorites',       // beliebte Workouts
-  getRecent: '/api/workouts/recent',             // letzte Trainings
-  getRandomWorkout: '/api/exercises/random'      // zufällige Übungsauswahl
+  getActivity: '/api/health/activity',           
+  getFavorites: '/api/workouts/favorites',       
+  getRecent: '/api/workouts/recent',            
+  getRandomWorkout: '/api/exercises/random'     
 };
 
-// === Initialisierung beim Laden ===
+// Load everything when entering Dashboard
 document.addEventListener("DOMContentLoaded", () => {
   loadActivityGrid();
   loadFavoriteWorkouts();
@@ -17,11 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
   setupButtons();
 });
 
-// === GitHub-ähnliches Raster: Trainings-Aktivität ===
+// Trainingtracker - Almost same as Githubs 
 async function loadActivityGrid() {
   try {
     const res = await fetch(API.getActivity);
-    const data = await res.json(); // erwartet ein Array von Datumsstrings, z. B. ["2025-06-01", "2025-06-03", ...]
+    const data = await res.json(); 
 
     const activityGrid = document.getElementById("activity-grid");
     activityGrid.innerHTML = "";
@@ -31,7 +29,7 @@ async function loadActivityGrid() {
       const day = new Date(today);
       day.setDate(today.getDate() - i);
 
-      const dayStr = day.toISOString().split("T")[0]; // YYYY-MM-DD
+      const dayStr = day.toISOString().split("T")[0]; // Like in the last Web Exercise 4
 
       const box = document.createElement("div");
       if (data.includes(dayStr)) {
@@ -44,7 +42,6 @@ async function loadActivityGrid() {
   }
 }
 
-// === Favoriten laden ===
 async function loadFavoriteWorkouts() {
   try {
     const res = await fetch(API.getFavorites);
@@ -65,7 +62,6 @@ async function loadFavoriteWorkouts() {
   }
 }
 
-// === Letzte Workouts laden ===
 async function loadRecentWorkouts() {
   try {
     const res = await fetch(API.getRecent);
@@ -86,7 +82,7 @@ async function loadRecentWorkouts() {
   }
 }
 
-// === Button-Funktionen ===
+// Buttons for Find Workout (get a random one) and Create workout (make your own)
 function setupButtons() {
   document.getElementById("find-workout").addEventListener("click", async () => {
   try {
@@ -105,6 +101,6 @@ function setupButtons() {
   }
 });
   document.getElementById("create-workout").addEventListener("click", () => {
-    window.location.href = "create-workout.html"; // muss ggf. erstellt werden
+    window.location.href = "create-workout.html"; 
   });
 }

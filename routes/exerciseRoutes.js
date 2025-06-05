@@ -69,7 +69,7 @@ router.get('/target/:target', async (req, res) => {
   }
 });
 
-// Route: /api/exercises/random NEU!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// NEU!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 router.get('/random', async (req, res) => {
   try {
     const [rows] = await db.promise().query(

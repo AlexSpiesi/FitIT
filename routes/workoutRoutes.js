@@ -311,7 +311,7 @@ router.put("/:id/exercises", (req, res) => {
   );
 });
 
-// Neues Workout speichern
+// Safe a newly created Workout NEU!!!!!!!!!!!!!!!!!!!!
 router.post('/', async (req, res) => {
   const { name, exercises } = req.body;
 
@@ -320,14 +320,12 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    // Workout speichern
     const [result] = await db.promise().query(
       'INSERT INTO workouts (name) VALUES (?)',
       [name]
     );
     const workoutId = result.insertId;
 
-    // Übungen verknüpfen
     for (const exId of exercises) {
       await db.promise().query(
         'INSERT INTO workout_exercises (workout_id, exercise_id) VALUES (?, ?)',
