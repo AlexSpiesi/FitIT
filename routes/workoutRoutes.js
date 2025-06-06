@@ -224,7 +224,7 @@ router.post("/:workoutId/exercises", (req, res) => {
   );
 });
 
-router.get("/user/:user_id", (req, res) => {
+router.get("/:user_id", (req, res) => {
   const userId = req.params.user_id;
 
   const sql = `

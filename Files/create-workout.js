@@ -1,44 +1,67 @@
 document.addEventListener("DOMContentLoaded", () => {
   fetchExercises();
 
-  document.getElementById("workout-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
+  document
+    .getElementById("workout-form")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    const name = document.getElementById("workout-name").value;
-    const selected = Array.from(document.querySelectorAll("input[name='exercise']:checked"))
-      .map(input => input.value);
+      const name = document.getElementById("workout-name").value;
+      const selectedIds = Array.from(
+        document.querySelectorAll("input[name='exercise']:checked")
+      ).map((input) => input.value);
 
-    if (selected.length === 0) {
-      alert("Please select at least one exercise.");
-      return;
-    }
+      if (selectedIds.length === 0) {
+        alert("Bitte wähle mindestens eine Übung aus.");
+        return;
+      }
 
-    try {
-      const res = await fetch('/api/workouts', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name, exercises: selected })
-      });
+      try {
+        localStorage.setItem("user_id", "1");
+        const user_id = parseInt(localStorage.getItem("user_id"), 10);
+        if (isNaN(user_id)) {
+          alert("User-ID nicht gefunden. Bist du eingeloggt?");
+          return;
+        }
 
-      if (!res.ok) throw new Error("Failed to save workout");
-      alert("Workout saved!");
-      window.location.href = "dashboard.html";
-    } catch (err) {
-      console.error(err);
-      alert("An error occurred while saving the workout.");
-    }
-  });
+        const allExercises = await fetch("/api/exercises").then((res) =>
+          res.json()
+        );
+        const selectedExercises = allExercises.filter((ex) =>
+          selectedIds.includes(ex.id)
+        );
+
+        const res = await fetch("/api/workouts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user_id, name, exercises: selectedExercises }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          console.error("Server responded with:", data);
+          throw new Error("Failed to save workout");
+        }
+
+        alert("Workout saved!");
+        window.location.href = "dashboard.html";
+      } catch (err) {
+        console.error("Error while saving workout:", err);
+        alert("An error occurred while saving the workout.");
+      }
+    });
 });
 
 async function fetchExercises() {
   try {
-    const res = await fetch('/api/exercises');
+    const res = await fetch("/api/exercises");
     const exercises = await res.json();
 
     const container = document.getElementById("exercise-list");
-    exercises.forEach(ex => {
+    exercises.forEach((ex) => {
       const wrapper = document.createElement("div");
       wrapper.className = "exercise-item";
 
@@ -51,7 +74,7 @@ async function fetchExercises() {
       label.textContent = ex.name;
 
       wrapper.appendChild(checkbox);
-      wrapper.appendChild(label);
+      wrapper.appendChild(label); 
       container.appendChild(wrapper);
     });
   } catch (err) {

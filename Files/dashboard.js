@@ -1,7 +1,8 @@
 const DAYS_SHOWN = 70;
 
 const API = {
-  getActivity: '/api/health/activity',           
+  // getActivity: '/api/health/activity',
+  getActivity: '/api/health/calories', // Assuming this endpoint returns activity data    
   getFavorites: '/api/workouts/favorites',       
   getRecent: '/api/workouts/recent',            
   getRandomWorkout: '/api/exercises/random'     
