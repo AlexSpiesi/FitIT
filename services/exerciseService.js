@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 
 const EXERCISEDB_URL = 'https://exercisedb.p.rapidapi.com';
 const HEADERS = {
-  'X-RapidAPI-Key': "015c52bb70msh0ca69c0c0da9fa3p13dce6jsnc05c3d5b2905",
+  'X-RapidAPI-Key': "e4b3b931e0mshaea933ba92eab04p15ab82jsn2a002a06f356",
   'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com',
 };
 
