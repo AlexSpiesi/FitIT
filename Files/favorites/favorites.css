@@ -1,0 +1,86 @@
+@import url("../base.css");
+@import url("../header.css");
+
+body {
+  margin: 0;
+  background-color: #0f0f10;
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  background-color: #1a1a1a;
+  padding: 20px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header h1 {
+  font-size: 1.5em;
+  color: #1ac2ff;
+  margin: 0;
+}
+
+.back-button {
+  color: white;
+  text-decoration: none;
+  font-size: 1em;
+}
+
+.back-button:hover {
+  color: #1ac2ff;
+}
+
+.favorites-container {
+  padding: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 15px;
+  flex-grow: 1;
+}
+
+.favorite-card {
+  background-color: #1a1a1a;
+  border-radius: 6px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.favorite-card:hover {
+  transform: scale(1.03);
+}
+
+.favorite-card img {
+  width: 100%;
+  border-radius: 5px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.favorite-card h3 {
+  margin-top: 10px;
+  font-size: 1em;
+  color: white;
+}
+
+.workout-details {
+  padding: 20px;
+  background-color: #1a1a1a;
+  border-top: 2px solid #1ac2ff;
+  margin-top: 20px;
+  border-radius: 6px;
+}
+
+.workout-details img {
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+
+

@@ -96,7 +96,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // Favorisieren
       await fetch(`/api/workouts/${data.workout_id}/favorite`, {
         method: "POST",
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        headers: { Authorization: "Bearer " + localStorage.getItem("token"), "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id, name, exercises: selectedExercises }),
       });
 
       if (!res.ok) {

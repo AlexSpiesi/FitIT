@@ -83,6 +83,7 @@ router.get('/exercise/:id', async (req, res) => {
   }
 });
 
+
 // Rene Test - Get a random set of 6 exercises -> Works, but only opens small window with exercises
 router.get('/random', async (req, res) => {
   try {

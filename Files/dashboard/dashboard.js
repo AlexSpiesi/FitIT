@@ -49,7 +49,7 @@ async function loadFavoriteWorkouts() {
   //   const userId = localStorage.getItem("userId");
   // const res = await fetch(`/api/workouts/favorites?user_id=${userId}`);
 
-    const res = await fetch(API.getFavorites);
+    const res = await fetch(API.getFavorites+`?user_id=${user_id}`);
     if (!res.ok) throw new Error(`Status ${res.status}`);
     const favorites = await res.json();
 

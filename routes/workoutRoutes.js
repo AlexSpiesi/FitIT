@@ -235,7 +235,7 @@ router.post("/:workoutId/exercises", (req, res) => {
 //   res.json(favorites);
 // });
 router.get('/favorites', async (req, res) => {
-  const userId = req.user?.id || req.query.user_id || req.params.user_id;
+  const userId = req.body?.id || req.query.user_id || req.params.user_id;
   if (!userId) {
     return res.status(400).json({ error: "user_id is required" });
   }
@@ -251,13 +251,19 @@ router.get('/favorites', async (req, res) => {
     if (err) return res.status(500).json({ error: err.message });
     const results = rows.map(r => ({ id: r.id, name: r.name, image: r.image }));
     res.json(results);
+    console.log(results)
   });
 });
+
 router.post('/:workoutId/favorite', (req, res) => {
-  const userId = req.user.id;
+  const { user_id, name, exercises } = req.body;
+
+  if (!user_id || !name || !exercises || exercises.length === 0) {
+    return res.status(400).json({ error: "Ungültige Eingabedaten" });
+  }
   const workoutId = parseInt(req.params.workoutId);
   const sql = `INSERT OR IGNORE INTO favorites (user_id, workout_id) VALUES (?, ?)`;
-  db.run(sql, [userId, workoutId], err => {
+  db.run(sql, [user_id, workoutId], err => {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ message: 'Favorit gespeichert' });
   });
