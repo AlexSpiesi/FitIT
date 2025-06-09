@@ -73,6 +73,16 @@ router.get('/target/:target', async (req, res) => {
   }
 });
 
+router.get('/exercise/:id', async (req, res) => {
+  try {
+    const exercise = await exerciseService.fetchById(req.params.id);
+    if (!exercise) return res.status(404).json({ error: 'Übung nicht gefunden' });
+    res.json(exercise);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Rene Test - Get a random set of 6 exercises -> Works, but only opens small window with exercises
 router.get('/random', async (req, res) => {
   try {

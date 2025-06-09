@@ -162,12 +162,13 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db");
 const workoutService = require('../services/workoutService');
-// const { authenticateToken } = require('../middleware/authMiddleware');
+const { authenticateToken } = require('../middleware/authMiddleware');
 
 router.post("/", (req, res) => {
   const { user_id, name, exercises } = req.body;
 
   if (!user_id || !name || !exercises || exercises.length === 0) {
+    console.log("req.user:", req.user); // <- Debug-Log
     return res.status(400).json({ error: "Ungültige Eingabedaten" });
   }
 
@@ -282,6 +283,7 @@ router.get('/recent', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+// Move this route to the end of the file to avoid conflicts with /recent and /favorites
 router.get("/:user_id", (req, res) => {
   const userId = req.params.user_id;
 
@@ -347,6 +349,7 @@ router.delete("/:workout_id", (req, res) => {
     }
   );
 });
+
 router.put("/:id/exercises", (req, res) => {
   const workoutId = req.params.id;
   const { exercise } = req.body;
@@ -376,4 +379,7 @@ router.put("/:id/exercises", (req, res) => {
   );
 });
 
+// (Duplicate /:user_id route removed to avoid conflicts)
+
 module.exports = router;
+

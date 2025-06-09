@@ -10,7 +10,11 @@ const fetchAllExercises = async () => {
   const res = await fetch(`${EXERCISEDB_URL}/exercises`, { headers: HEADERS });
   return await res.json();
 };
-
+const fetchById = async (id) => {
+  const response = await fetch(`${EXERCISEDB_URL}/exercises/exercise/${id}`, { headers: HEADERS });
+  if (!response.ok) throw new Error('Fehler beim Abrufen der Übung');
+  return response.json();
+};
 const fetchBodyParts = async () => {
   const res = await fetch(`${EXERCISEDB_URL}/exercises/bodyPartList`, { headers: HEADERS });
   return await res.json();
@@ -53,4 +57,6 @@ module.exports = {
   fetchBodyParts,
   fetchTargets,
   fetchByBodyPart,
+  fetchById,
 };
+
