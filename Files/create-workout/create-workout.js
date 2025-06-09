@@ -84,6 +84,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
+        localStorage.setItem("user_id", "1");
+      const user_id = parseInt(localStorage.getItem("user_id"), 10);
+      if (isNaN(user_id)) {
+        alert("User-ID nicht gefunden. Bist du eingeloggt?");
+        return;
+      }
         // Get selected exercises directly from the DOM
         const selectedExercises = Array.from(
           document.querySelectorAll("input[name='exercise']:checked")

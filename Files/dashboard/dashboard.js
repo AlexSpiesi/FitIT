@@ -46,7 +46,7 @@ async function loadActivityGrid() {
 
 async function loadFavoriteWorkouts() {
   try {
-    //   const userId = localStorage.getItem("userId");
+    const user_id = localStorage.getItem("userId");
     // const res = await fetch(`/api/workouts/favorites?user_id=${userId}`);
 
     const res = await fetch(API.getFavorites+`?user_id=${user_id}`);
