@@ -41,13 +41,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const data = await res.json();
 
+        // Favorisieren
+        await fetch(`/api/workouts/${data.workout_id}/favorite`, {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        });
+
         if (!res.ok) {
           console.error("Server responded with:", data);
           throw new Error("Failed to save workout");
         }
 
         alert("Workout saved!");
-        window.location.href = "dashboard.html";
+        window.location.href = "../dashboard/dashboard.html";
       } catch (err) {
         console.error("Error while saving workout:", err);
         alert("An error occurred while saving the workout.");
@@ -74,7 +82,7 @@ async function fetchExercises() {
       label.textContent = ex.name;
 
       wrapper.appendChild(checkbox);
-      wrapper.appendChild(label); 
+      wrapper.appendChild(label);
       container.appendChild(wrapper);
     });
   } catch (err) {

@@ -1,3 +1,34 @@
+require('dotenv').config();
+const express = require('express');
+const app = express();
+const path = require('path');
+
+// All routes
+const exerciseRoutes = require('./routes/exerciseRoutes');
+const healthRoutes = require('./routes/healthRoutes');
+const userRoutes = require('./routes/userRoutes');
+const workoutRoutes = require('./routes/workoutRoutes');
+
+// Swagger setup
+const { swaggerUi, specs } = require('./swagger');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
+// Middleware
+app.use(express.static(path.join(__dirname, 'files')));
+app.use(express.json());
+
+// Route handlers
+app.use('/api/exercises', exerciseRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/health', healthRoutes);
+app.use('/api/workouts', workoutRoutes);
+
+// START SERVER
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Server running on http://localhost:${PORT}`);
+});
+
 /*const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
@@ -370,35 +401,3 @@ app.listen(3000, () => {
   console.log("➡️  /test/idealweight?height=175&gender=male");
 });
 */
-
-require('dotenv').config();
-const express = require('express');
-const app = express();
-const path = require('path');
-
-// All routes
-const exerciseRoutes = require('./routes/exerciseRoutes');
-const healthRoutes = require('./routes/healthRoutes');
-const userRoutes = require('./routes/userRoutes');
-const workoutRoutes = require('./routes/workoutRoutes');
-
-// Swagger setup
-const { swaggerUi, specs } = require('./swagger');
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-
-// Middleware
-app.use(express.static(path.join(__dirname, 'files')));
-app.use(express.json());
-
-// Route handlers
-app.use('/api/exercises', exerciseRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/health', healthRoutes);
-app.use('/api/workouts', workoutRoutes);
-
-// START SERVER
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
-});
-

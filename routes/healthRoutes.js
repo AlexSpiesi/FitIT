@@ -59,4 +59,10 @@ router.get('/calories', async (req, res) => {
   }
 });
 
+router.get('/activity', (req, res) => {
+  // Beispielantwort: Benutzer war an drei Tagen aktiv
+  const activeDays = ['2025-06-01', '2025-06-03', '2025-06-07'];
+  res.json(activeDays);
+});
+
 module.exports = router;

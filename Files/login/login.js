@@ -12,7 +12,7 @@ document.querySelector('.login-form').addEventListener('submit', async (e) => {
         localStorage.setItem('token', data.token);
         console.log('Login successful!');
         // Redirect or update UI as needed
-        window.location.href = "dashboard.html";
+        window.location.href = "../dashboard/dashboard.html";
       } else {
         console.log(data.error || 'Login failed');
       }

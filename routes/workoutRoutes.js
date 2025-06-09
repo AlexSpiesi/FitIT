@@ -161,6 +161,8 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
+const workoutService = require('../services/workoutService');
+// const { authenticateToken } = require('../middleware/authMiddleware');
 
 router.post("/", (req, res) => {
   const { user_id, name, exercises } = req.body;
@@ -173,7 +175,7 @@ router.post("/", (req, res) => {
     `INSERT INTO workouts (user_id, name) VALUES (?, ?)`,
     [user_id, name],
     function (err) {
-      if (err) return res.status(500).json({ error: err.message });
+      if (err) return res.status(500).json({ error: err && err.message ? err.message : "Internal server error" });
 
       const workoutId = this.lastID;
       const stmt = db.prepare(`
@@ -224,6 +226,62 @@ router.post("/:workoutId/exercises", (req, res) => {
   );
 });
 
+// router.get("/favorites", (req, res) => {
+//   const favorites = [
+//     { name: "Push-ups", image: "/images/pushups.png", bodyPart: "chest" },
+//     { name: "Squats", image: "/images/squats.png", bodyPart: "legs" },
+//   ];
+//   res.json(favorites);
+// });
+router.get('/favorites', async (req, res) => {
+  const userId = req.user?.id || req.query.user_id || req.params.user_id;
+  if (!userId) {
+    return res.status(400).json({ error: "user_id is required" });
+  }
+  const sql = `
+    SELECT w.id, w.name, MIN(we.gif_url) AS image
+    FROM favorites f
+    JOIN workouts w ON f.workout_id = w.id
+    JOIN workout_exercises we ON w.id = we.workout_id
+    WHERE f.user_id = ?
+    GROUP BY w.id, w.name
+  `;
+  db.all(sql, [userId], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    const results = rows.map(r => ({ id: r.id, name: r.name, image: r.image }));
+    res.json(results);
+  });
+});
+router.post('/:workoutId/favorite', (req, res) => {
+  const userId = req.user.id;
+  const workoutId = parseInt(req.params.workoutId);
+  const sql = `INSERT OR IGNORE INTO favorites (user_id, workout_id) VALUES (?, ?)`;
+  db.run(sql, [userId, workoutId], err => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ message: 'Favorit gespeichert' });
+  });
+});
+
+// router.get("/recent", (req, res) => {
+//   const recent = [
+//     { name: "Deadlifts", image: "/images/deadlifts.png", bodyPart: "back" },
+//     { name: "Bench Press", image: "/images/benchpress.png", bodyPart: "chest" },
+//   ];
+//   res.json(recent);
+// });
+router.get('/recent', async (req, res) => {
+  // If authentication middleware is not used, get userId from query or params
+  const userId = req.user?.id || req.query.user_id || req.params.user_id;
+  if (!userId) {
+    return res.status(400).json({ error: "user_id is required" });
+  }
+  try {
+    const recent = await workoutService.getRecentWorkouts(userId);
+    res.json(recent);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 router.get("/:user_id", (req, res) => {
   const userId = req.params.user_id;
 
@@ -297,15 +355,22 @@ router.put("/:id/exercises", (req, res) => {
     return res.status(400).json({ error: "Ungültige Übungsdaten" });
   }
 
-  const description = (exercise.instructions || []).join("\n");
+  const sql = `
+    INSERT INTO workout_exercises (workout_id, exercise_id, name, gif_url, description)
+    VALUES (?, ?, ?, ?, ?)
+  `;
 
   db.run(
-    `INSERT INTO workout_exercises (workout_id, exercise_id, name, gif_url, description)
-     VALUES (?, ?, ?, ?, ?)`,
-    [workoutId, exercise.id, exercise.name, exercise.gifUrl, description],
+    sql,
+    [
+      workoutId,
+      exercise.id,
+      exercise.name,
+      exercise.gifUrl,
+      (exercise.instructions || []).join("\n"),
+    ],
     function (err) {
       if (err) return res.status(500).json({ error: err.message });
-
       res.status(200).json({ message: "Übung hinzugefügt", id: this.lastID });
     }
   );

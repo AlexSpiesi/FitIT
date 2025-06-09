@@ -1,5 +1,5 @@
-@import "base.css";
-@import url(header.css);
+@import "../base.css";
+@import url(../header.css);
  body {
         display: flex;
         flex-direction: column;
