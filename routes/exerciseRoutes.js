@@ -34,10 +34,11 @@ router.get('/targets', async (req, res) => {
 
 router.get('/bodypart/:part', async (req, res) => {
   const { part } = req.params;
+  const limit = req.query.limit || 10;
   try {
     const exercises = await exerciseService.fetchByBodyPart(req.params.part);
-    //res.json(exercises.slice(0, 10)); // z. B. nur die ersten 10 anzeigen
-    res.json(exercises);
+    res.json(exercises.slice(0, 15)); // z. B. nur die ersten 10 anzeigen
+    //res.json(exercises);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
