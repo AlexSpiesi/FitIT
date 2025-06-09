@@ -46,10 +46,14 @@ async function loadActivityGrid() {
 
 async function loadFavoriteWorkouts() {
   try {
-  //   const userId = localStorage.getItem("userId");
-  // const res = await fetch(`/api/workouts/favorites?user_id=${userId}`);
+    //   const userId = localStorage.getItem("userId");
+    // const res = await fetch(`/api/workouts/favorites?user_id=${userId}`);
 
-    const res = await fetch(API.getFavorites);
+    const res = await fetch(API.getFavorites, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"), // <–– notwendig
+      },
+    });
     if (!res.ok) throw new Error(`Status ${res.status}`);
     const favorites = await res.json();
 
@@ -59,9 +63,24 @@ async function loadFavoriteWorkouts() {
     favorites.forEach((workout) => {
       const img = document.createElement("img");
       img.src = workout.image || "images/placeholder.png";
-      img.alt = workout.name;
-      img.title = workout.name;
-      container.appendChild(img);
+      // Add workout name as a heading
+      const workoutName = document.createElement("div");
+      workoutName.textContent = workout.name;
+      workoutName.style.fontWeight = "bold";
+      // List exercises under the workout name
+      if (Array.isArray(workout.exercises) && workout.exercises.length > 0) {
+        const exerciseList = document.createElement("ul");
+        workout.exercises.forEach((exercise) => {
+          const li = document.createElement("li");
+          li.textContent = exercise.name;
+          exerciseList.appendChild(li);
+        });
+        workoutName.appendChild(exerciseList);
+      }
+      container.appendChild(workoutName);
+      // img.alt = workout.name;
+      // img.title = workout.name;
+      // container.appendChild(img);
     });
   } catch (err) {
     console.error("Failed to load favorites:", err);
@@ -70,10 +89,14 @@ async function loadFavoriteWorkouts() {
 
 async function loadRecentWorkouts() {
   try {
-  //   const userId = localStorage.getItem("userId");
-  // const res = await fetch(`/api/workouts/recent?user_id=${userId}`);
+    //   const userId = localStorage.getItem("userId");
+    // const res = await fetch(`/api/workouts/recent?user_id=${userId}`);
 
-    const res = await fetch(API.getRecent);
+    const res = await fetch(API.getRecent, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"), // <–– notwendig
+      },
+    });
     if (!res.ok) throw new Error(`Status ${res.status}`);
     const recent = await res.json();
 
@@ -82,7 +105,7 @@ async function loadRecentWorkouts() {
 
     recent.forEach((workout) => {
       const img = document.createElement("img");
-      img.src = workout.image || "images/placeholder.png";
+      // img.src = workout.image || "images/placeholder.png";
       img.alt = workout.name;
       img.title = workout.name;
       container.appendChild(img);

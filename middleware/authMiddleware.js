@@ -6,7 +6,11 @@ function authenticateToken(req, res, next) {
   const token = authHeader && authHeader.split(" ")[1];
   if (!token) return res.sendStatus(401);
   jwt.verify(token, SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
+    if (err) {
+      console.log("JWT verification failed:", err);
+      return res.sendStatus(403);
+    }
+    console.log("Decoded JWT payload:", user); // 👈 wichtig!
     req.user = user;
     next();
   });
