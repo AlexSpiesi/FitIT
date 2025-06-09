@@ -161,11 +161,16 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
-const workoutService = require('../services/workoutService');
-const { authenticateToken } = require('../middleware/authMiddleware');
+const workoutService = require("../services/workoutService");
+const { authenticateToken } = require("../middleware/authMiddleware");
 
-router.post("/", (req, res) => {
-  const { user_id, name, exercises } = req.body;
+router.post("/", authenticateToken, (req, res) => {
+  // const { user_id, name, exercises } = req.body;
+  const { name, exercises } = req.body;
+  const user_id = req.user.id;
+
+  console.log("BODY:", req.body);
+  console.log("USER:", req.user);
 
   if (!user_id || !name || !exercises || exercises.length === 0) {
     console.log("req.user:", req.user); // <- Debug-Log
@@ -176,7 +181,10 @@ router.post("/", (req, res) => {
     `INSERT INTO workouts (user_id, name) VALUES (?, ?)`,
     [user_id, name],
     function (err) {
-      if (err) return res.status(500).json({ error: err && err.message ? err.message : "Internal server error" });
+      if (err)
+        return res.status(500).json({
+          error: err && err.message ? err.message : "Internal server error",
+        });
 
       const workoutId = this.lastID;
       const stmt = db.prepare(`
@@ -202,7 +210,7 @@ router.post("/", (req, res) => {
   );
 });
 
-router.post("/:workoutId/exercises", (req, res) => {
+router.post("/:workoutId/exercises", authenticateToken, (req, res) => {
   const workoutId = req.params.workoutId;
   const { exercise_id, name, gif_url, description } = req.body;
 
@@ -249,7 +257,11 @@ router.get('/favorites', async (req, res) => {
   `;
   db.all(sql, [userId], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
-    const results = rows.map(r => ({ id: r.id, name: r.name, image: r.image }));
+    const results = rows.map((r) => ({
+      id: r.id,
+      name: r.name,
+      image: r.image,
+    }));
     res.json(results);
     console.log(results)
   });
@@ -265,7 +277,7 @@ router.post('/:workoutId/favorite', (req, res) => {
   const sql = `INSERT OR IGNORE INTO favorites (user_id, workout_id) VALUES (?, ?)`;
   db.run(sql, [user_id, workoutId], err => {
     if (err) return res.status(500).json({ error: err.message });
-    res.json({ message: 'Favorit gespeichert' });
+    res.json({ message: "Favorit gespeichert" });
   });
 });
 
@@ -276,7 +288,7 @@ router.post('/:workoutId/favorite', (req, res) => {
 //   ];
 //   res.json(recent);
 // });
-router.get('/recent', async (req, res) => {
+router.get("/recent", authenticateToken, async (req, res) => {
   // If authentication middleware is not used, get userId from query or params
   const userId = req.user?.id || req.query.user_id || req.params.user_id;
   if (!userId) {
@@ -290,7 +302,7 @@ router.get('/recent', async (req, res) => {
   }
 });
 // Move this route to the end of the file to avoid conflicts with /recent and /favorites
-router.get("/:user_id", (req, res) => {
+router.get("/:user_id", authenticateToken, (req, res) => {
   const userId = req.params.user_id;
 
   const sql = `
@@ -332,7 +344,7 @@ router.get("/:user_id", (req, res) => {
 });
 
 // DELETE /api/workouts/:workout_id
-router.delete("/:workout_id", (req, res) => {
+router.delete("/:workout_id", authenticateToken, (req, res) => {
   const workoutId = req.params.workout_id;
 
   // Zuerst: zugehörige Übungen löschen
@@ -356,7 +368,7 @@ router.delete("/:workout_id", (req, res) => {
   );
 });
 
-router.put("/:id/exercises", (req, res) => {
+router.put("/:id/exercises", authenticateToken, (req, res) => {
   const workoutId = req.params.id;
   const { exercise } = req.body;
 
@@ -388,4 +400,3 @@ router.put("/:id/exercises", (req, res) => {
 // (Duplicate /:user_id route removed to avoid conflicts)
 
 module.exports = router;
-
