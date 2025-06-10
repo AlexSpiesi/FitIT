@@ -100,3 +100,73 @@ a.sign-in:hover {
   position: absolute;
   left: -9999px;
 }
+
+/* Responsive styles */
+@media (max-width: 900px) {
+  .hero,
+  .mission {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero figure img,
+  .mission figure img {
+    width: 90vw;
+    max-width: 320px;
+  }
+
+  .hero {
+    padding: 30px 10px;
+  }
+
+  .mission {
+    padding: 30px 10px;
+    gap: 20px;
+  }
+
+  .call-to-action aside {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .call-to-action aside img {
+    width: 90vw;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 1em;
+    padding: 0;
+  }
+
+  .hero article h1 {
+    font-size: 2em;
+  }
+
+  .mission article h2 {
+    font-size: 1.2em;
+  }
+
+  .hero,
+  .mission,
+  .call-to-action {
+    padding: 16px 4vw;
+  }
+
+  .hero figure img,
+  .mission figure img,
+  .call-to-action aside img {
+    width: 100vw;
+    max-width: 98vw;
+  }
+
+  .call-to-action button,
+  a.sign-in {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1em;
+  }
+}
