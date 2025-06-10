@@ -82,5 +82,8 @@ body {
   margin-top: 5px;
 }
 
-
+.visually-hidden {
+  position: absolute;
+  left: -9999px;
+}
 

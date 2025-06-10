@@ -242,7 +242,7 @@ router.post("/:workoutId/exercises", authenticateToken, (req, res) => {
 //   ];
 //   res.json(favorites);
 // });
-router.get('/favorites', async (req, res) => {
+router.get("/favorites", async (req, res) => {
   const userId = req.body?.id || req.query.user_id || req.params.user_id;
   if (!userId) {
     return res.status(400).json({ error: "user_id is required" });
@@ -263,11 +263,11 @@ router.get('/favorites', async (req, res) => {
       image: r.image,
     }));
     res.json(results);
-    console.log(results)
+    console.log(results);
   });
 });
 
-router.post('/:workoutId/favorite', (req, res) => {
+router.post("/:workoutId/favorite", (req, res) => {
   const { user_id, name, exercises } = req.body;
 
   if (!user_id || !name || !exercises || exercises.length === 0) {
@@ -275,7 +275,7 @@ router.post('/:workoutId/favorite', (req, res) => {
   }
   const workoutId = parseInt(req.params.workoutId);
   const sql = `INSERT OR IGNORE INTO favorites (user_id, workout_id) VALUES (?, ?)`;
-  db.run(sql, [user_id, workoutId], err => {
+  db.run(sql, [user_id, workoutId], (err) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ message: "Favorit gespeichert" });
   });
@@ -340,6 +340,29 @@ router.get("/:user_id", authenticateToken, (req, res) => {
     }, {});
 
     res.json(Object.values(workouts));
+  });
+});
+
+// DELETE /api/workouts/:workoutId/favorite
+router.delete("/:workoutId/favorite", authenticateToken, (req, res) => {
+  const workoutId = parseInt(req.params.workoutId, 10);
+  const userId = req.user && req.user.id;
+
+  if (!userId || isNaN(workoutId)) {
+    return res
+      .status(400)
+      .json({ error: "user_id und workout_id sind erforderlich" });
+  }
+
+  const sql = `DELETE FROM favorites WHERE user_id = ? AND workout_id = ?`;
+  db.run(sql, [userId, workoutId], function (err) {
+    if (err) return res.status(500).json({ error: err.message });
+
+    if (this.changes === 0) {
+      return res.status(404).json({ error: "Favorit nicht gefunden" });
+    }
+
+    res.status(200).json({ message: "Favorit gelöscht" });
   });
 });
 

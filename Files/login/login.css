@@ -1,56 +1,60 @@
 @import "../base.css";
 @import url(../header.css);
- body {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        margin: 0;
-        font-family: sans-serif;
-      }
-      main {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .login-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      .login-container h1 {
-        margin-bottom: 20px;
-      }
-      .login-form {
-        display: flex;
-        flex-direction: column;
-        width: 400px;
-      }
-      .login-form input,
-      .login-form button {
-        width: 100%;
-        box-sizing: border-box;
-      }
-      .login-form input {
-        margin-bottom: 10px;
-        padding: 8px;
-      }
-      .login-form button {
-        padding: 8px;
-      }
-      .signup-prompt{
-        color: white;
-      }
-      .form-layout{
-        display:flex;
-        align-items: center;
-        justify-content: center;
-        gap: 20px;
-        padding: 20px
-      }
-      .side-image{
-        max-width: 15vw;
-        height: auto;
-      }
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  font-family: sans-serif;
+}
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.login-container h1 {
+  margin-bottom: 20px;
+}
+.login-form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+}
+.login-form input,
+.login-form button {
+  width: 100%;
+  box-sizing: border-box;
+}
+.login-form input {
+  margin-bottom: 10px;
+  padding: 8px;
+}
+.login-form button {
+  padding: 8px;
+}
+.signup-prompt {
+  color: white;
+}
+.form-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+.side-image {
+  max-width: 15vw;
+  height: auto;
+}
+.visually-hidden {
+  position: absolute;
+  left: -9999px;
+}
 
 /* Phone screens */
 @media (max-width: 749px) {
@@ -59,7 +63,7 @@
   }
   .login-container {
     width: 100%;
-    padding: 0 10px; 
+    padding: 0 10px;
   }
   .login-form {
     width: 100%;
@@ -87,4 +91,3 @@
     min-width: 0;
   }
 }
-

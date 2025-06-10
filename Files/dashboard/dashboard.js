@@ -6,6 +6,7 @@ const API = {
   getRecent: "/api/workouts/recent",
   markFavorite: (id) => `/api/workouts/${id}/favorite`,
   getRandomWorkout: "/api/exercises/random",
+  deleteFavorite: '/api/workouts/favorites'
 };
 
 // Load everything when entering Dashboard
@@ -45,43 +46,50 @@ async function loadActivityGrid() {
 }
 
 async function loadFavoriteWorkouts() {
-  try {
-    const user_id = localStorage.getItem("userId");
-    // const res = await fetch(`/api/workouts/favorites?user_id=${userId}`);
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
+  fetch(`${API.getFavorites}?user_id=${userId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  .then(res => res.json())
+  .then(data => {
+    const favoritesDiv = document.getElementById('favorites');
+    favoritesDiv.innerHTML = '';
 
-    const res = await fetch(API.getFavorites+`?user_id=${user_id}`);
-    if (!res.ok) throw new Error(`Status ${res.status}`);
-    const favorites = await res.json();
+    data.forEach(workout => {
+      const workoutDiv = document.createElement('div');
+      workoutDiv.classList.add('favorite-item');
 
-    const container = document.getElementById("favorite-workouts");
-    container.innerHTML = "";
+      const title = document.createElement('h3');
+      title.textContent = workout.title;
 
-    favorites.forEach((workout) => {
-      const img = document.createElement("img");
-      img.src = workout.image || "images/placeholder.png";
-      // Add workout name as a heading
-      const workoutName = document.createElement("div");
-      workoutName.textContent = workout.name;
-      workoutName.style.fontWeight = "bold";
-      // List exercises under the workout name
-      if (Array.isArray(workout.exercises) && workout.exercises.length > 0) {
-        const exerciseList = document.createElement("ul");
-        workout.exercises.forEach((exercise) => {
-          const li = document.createElement("li");
-          li.textContent = exercise.name;
-          exerciseList.appendChild(li);
-        });
-        workoutName.appendChild(exerciseList);
-      }
-      container.appendChild(workoutName);
-      // img.alt = workout.name;
-      // img.title = workout.name;
-      // container.appendChild(img);
+      // 🗑️ Delete button
+      const delBtn = document.createElement('button');
+      delBtn.textContent = '❌';
+      delBtn.classList.add('delete-favorite-btn');
+      delBtn.onclick = () => deleteFavoriteWorkout(workout._id);
+
+      workoutDiv.appendChild(title);
+      workoutDiv.appendChild(delBtn);
+      favoritesDiv.appendChild(workoutDiv);
     });
-  } catch (err) {
-    console.error("Failed to load favorites:", err);
-  }
+  })
+  .catch(err => console.error('Failed to load favorites:', err));
 }
+
+function deleteFavoriteWorkout(workoutId) {
+  const token = localStorage.getItem("token");
+  fetch(`${API.deleteFavorite}/${workoutId}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  .then(res => {
+    if (!res.ok) throw new Error('Failed to delete favorite');
+    loadFavoriteWorkouts(); // Refresh list
+  })
+  .catch(err => console.error(err));
+}
+
 
 async function loadRecentWorkouts() {
   try {
